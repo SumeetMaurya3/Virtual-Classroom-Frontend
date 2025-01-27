@@ -1,19 +1,24 @@
-import { Loader } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { Leva } from "leva";
-import { Experience } from "./components/Experience";
-import { UI } from "./components/UI";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import CoursePage from './Pages/CoursePage';
+import HomePage from './Pages/HomePage';
+import StudyPage from './Pages/StudyPage';
+import TopicsPage from './Pages/TopicsPage';
+import ContactUs from './Pages/ContactUs';
+import LoginPage from './Pages/LoginPage';
 
 function App() {
   return (
-    <>
-      <Loader />
-      <Leva  hidden/>
-      <UI />
-      <Canvas shadows camera={{ position: [0, 0, 1], fov: 30 }}>
-        <Experience />
-      </Canvas>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/course" element={<CoursePage />} />
+        <Route path="/study" element={<StudyPage />} />
+        <Route path="/topics" element={<TopicsPage />} />
+        <Route path="/contact" element={<ContactUs />} />
+        <Route path="/login" element={<LoginPage />} />
+        
+      </Routes>
+    </Router>
   );
 }
 

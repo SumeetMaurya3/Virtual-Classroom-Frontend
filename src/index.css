@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
   --leva-sizes-rootWidth: 340px;
 }
@@ -14,11 +15,17 @@
 
 body {
   margin: 0;
-  background-color: yellow;
-  background-image: linear-gradient(19deg, cyan 0%,#FFF 100%);
+  background-color: #0e0e0e;
+  overflow-x: hidden;
 }
 
 body.greenScreen {
   background-color: #00ff00;
   background-image: none;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
 }
