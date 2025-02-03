@@ -219,6 +219,12 @@ export function Avatar(props) {
     });
   });
 
+  // useFrame(({ camera }) => {
+  //   if (group.current) {
+  //     group.current.lookAt(camera.position);
+  //   }
+  // });
+
   useControls("FacialExpressions", {
     chat: button(() => chat()),
     winkLeft: button(() => {
