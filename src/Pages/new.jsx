@@ -242,7 +242,19 @@ export default function StudyPage() {
   // }, [speech.content]);
 
   if (loading) {
-    return <div className="text-white">Loading content...</div>;
+    return (
+      <div
+        className="text-white w-full h-full justify-center flex items-center"
+        style={{ backgroundColor: "#191F26" }}
+      >
+        <div>
+          <img
+            src="https://www.icegif.com/wp-content/uploads/2023/07/icegif-1264.gif"
+            alt="Loading Content..."
+          />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
