@@ -62,8 +62,8 @@ const Dots = (props) => {
 const EnvironmentCube = () => {
   const floortexture = useTexture("/images/floor.jpg"); // Add your own texture image
   const walltexture = useTexture("/images/wall.jpg"); // Add your own texture image
-  const sidewalltexture = useTexture("/images/bricks.jpg"); // Add your own texture image
-  const bricktexture = useTexture("/images/bricks.jpg"); // Add your own texture image
+  const sidewalltexture = useTexture("/images/pain13.png"); // Add your own texture image
+  const bricktexture = useTexture("/images/pain13.png"); // Add your own texture image
   const size = 8;
 
   return (

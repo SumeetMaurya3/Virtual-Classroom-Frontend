@@ -1,18 +1,24 @@
 import { useRef, useState } from "react";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 import { useChat } from "../hooks/useChat";
 import getGeminiSummary from "./Gemini";
 
 export const UI = ({ hidden, totalSlides, setCurrentSlide, ...props }) => {
-  const input = useRef();
   const { chat, loading, cameraZoomed, setCameraZoomed, message } = useChat();
   const [slideIndex, setSlideIndex] = useState(0);
+  const { transcript, resetTranscript, listening } = useSpeechRecognition();
+  const [isListening, setIsListening] = useState(false);
+  const [manualInput, setManualInput] = useState(""); // State for keyboard input
 
   const sendMessage = async () => {
-    const text = input.current.value;
-    if (!loading && !message) {
+    const text = `${manualInput} ${transcript}`.trim();
+    if (!loading && !message && text) {
       const summary = await getGeminiSummary(text);
       chat(summary);
-      input.current.value = "";
+      setManualInput(""); // Clear manual input
+      resetTranscript(); // Reset speech input
     }
   };
 
@@ -30,6 +36,15 @@ export const UI = ({ hidden, totalSlides, setCurrentSlide, ...props }) => {
       setCurrentSlide(prevIndex);
       return prevIndex;
     });
+  };
+
+  const toggleListening = () => {
+    if (isListening) {
+      SpeechRecognition.stopListening();
+    } else {
+      SpeechRecognition.startListening({ continuous: true });
+    }
+    setIsListening(!isListening);
   };
 
   if (hidden) {
@@ -68,7 +83,8 @@ export const UI = ({ hidden, totalSlides, setCurrentSlide, ...props }) => {
           <input
             className="w-full placeholder:text-gray-800 placeholder:italic p-4 rounded-md bg-opacity-50 bg-white backdrop-blur-md"
             placeholder="Type a message..."
-            ref={input}
+            value={manualInput || transcript}
+            onChange={(e) => setManualInput(e.target.value)} // Handle keyboard input
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 sendMessage();
@@ -83,6 +99,18 @@ export const UI = ({ hidden, totalSlides, setCurrentSlide, ...props }) => {
             }`}
           >
             Send
+          </button>
+
+          {/* Speech Recognition Button */}
+          <button
+            onClick={toggleListening}
+            className={`p-4 rounded-md ${
+              isListening
+                ? "bg-red-500 hover:bg-red-600"
+                : "bg-blue-500 hover:bg-blue-600"
+            } text-white`}
+          >
+            {isListening ? "Stop" : "Speak"}
           </button>
         </div>
       </div>
