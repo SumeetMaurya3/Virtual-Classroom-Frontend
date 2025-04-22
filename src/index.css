@@ -20,8 +20,12 @@ body {
 }
 
 body.greenScreen {
-  background-color: #00ff00;
-  background-image: none;
+  background-color: #000000;
+  /* background-image: url("http://img.freepik.com/free-vector/interior-classroom_1308-26552.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; */
+
 }
 
 @layer base {

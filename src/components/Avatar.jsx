@@ -2,6 +2,7 @@ import { useAnimations, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { button, useControls } from "leva";
 import React, { useEffect, useRef, useState } from "react";
+import { useThree } from "@react-three/fiber";
 
 import * as THREE from "three";
 import { useChat } from "../hooks/useChat";
@@ -102,8 +103,9 @@ const corresponding = {
 let setupMode = false;
 
 export function Avatar(props) {
+  const { camera } = useThree();
   const { nodes, materials, scene } = useGLTF(
-    "/models/663a195483ac0e9cfde2c6893.glb"
+    "/models/64f1a714fe61576b46f27ca2.glb"
   );
 
   const { message, onMessagePlayed, chat } = useChat();
@@ -111,7 +113,7 @@ export function Avatar(props) {
   const [lipsync, setLipsync] = useState();
 
   useEffect(() => {
-    console.log(message);
+    // console.log(message);
     if (!message) {
       setAnimation("Idle");
       return;
@@ -219,11 +221,26 @@ export function Avatar(props) {
     });
   });
 
-  // useFrame(({ camera }) => {
-  //   if (group.current) {
-  //     group.current.lookAt(camera.position);
-  //   }
-  // });
+  useFrame(({ camera }) => {
+    if (group.current) {
+      const angleOffset = THREE.MathUtils.degToRad(40); // Set desired angle (30°)
+
+      // Get the camera's X position
+      const cameraX = camera.position.x;
+
+      // Calculate the offset position based on the angle
+      const targetX = cameraX + Math.cos(2); // Add X-axis offset
+      const targetZ = camera.position.z + Math.sin(1); // Slight Z offset
+
+      const targetPosition = new THREE.Vector3(
+        targetX, // X with offset
+        group.current.position.y, // Lock Y
+        targetZ // Add slight Z variation for natural effect
+      );
+
+      group.current.lookAt(targetPosition);
+    }
+  });
 
   useControls("FacialExpressions", {
     chat: button(() => chat()),
